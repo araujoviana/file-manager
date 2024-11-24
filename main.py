@@ -5,6 +5,14 @@ import os
 home_dir = os.path.expanduser("~")
 contents = os.listdir(home_dir)
 
+# Navigation functions
+
+
+def button_callback(sender, app_data, user_data):
+    print(f"The message is {user_data}")
+
+
+# Main window
 dpg.create_context()
 dpg.create_viewport(title="File Manager", decorated=True, width=800, height=600)
 dpg.setup_dearpygui()
@@ -20,7 +28,7 @@ with dpg.window(
     no_collapse=True,
 ):
     for file in contents:
-        dpg.add_button(label=file)
+        dpg.add_button(label=file, callback=button_callback, user_data=file)
 
 
 dpg.show_viewport()
