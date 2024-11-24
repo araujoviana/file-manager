@@ -19,14 +19,17 @@ def file_clicked(sender, app_data, user_data):
     print(f"Parent ID: {parent_id}")
     print(f"Children: {working_directory_files}")
 
-    for file in working_directory_files:
+    new_dir = os.path.join(home_dir, user_data)
+    contents = os.listdir(new_dir)
+    display_working_dir_files(new_dir)
 
-        if dpg.get_item_type(file) == "mvAppItemType::mvButton":
-            dpg.delete_item(file)
-            print(f"Hiding {file}")
 
-    # HACK doesn't work on windows, unless you add a ternary checking for os(?)
-    contents = os.listdir(home_dir + "/" + user_data)
+def display_working_dir_files(directory):
+    for button in dpg.get_item_children("FileWindow")[1]:
+        dpg.delete_item(button)
+
+    for file in contents:
+        dpg.add_button(label=file, callback=file_clicked, user_data=file)
 
 
 # Main window
@@ -43,10 +46,10 @@ with dpg.window(
     no_close=True,
     no_resize=True,
     no_collapse=True,
+    tag="FileWindow",
 ):
-    for file in contents:
-        dpg.add_button(label=file, callback=file_clicked, user_data=file)
 
+    display_working_dir_files(home_dir)
 
 dpg.show_viewport()
 dpg.start_dearpygui()
