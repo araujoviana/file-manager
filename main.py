@@ -5,6 +5,7 @@ import os
 import subprocess
 import platform
 import mimetypes
+import datetime
 
 home_dir = os.path.expanduser("~")
 contents = os.listdir(home_dir)  # Current directory's files
@@ -82,6 +83,8 @@ def display_working_dir_files(directory, contents):
         dpg.add_table_column(label="Size")
         # Column for file type
         dpg.add_table_column(label="Type")
+        # Column for last modification
+        dpg.add_table_column(label="Last modified")
 
         for item in contents:
             item_path = os.path.join(directory, item)
@@ -108,6 +111,13 @@ def display_working_dir_files(directory, contents):
 
                     file_type, _ = mimetypes.guess_type(item_path)
                     dpg.add_text(file_type if file_type is not None else "Unknown")
+
+                    mod_time = os.path.getmtime(item_path)
+                    last_modified_date = datetime.datetime.fromtimestamp(
+                        mod_time
+                    ).strftime("%Y-%m-%d %H:%M:%S")
+
+                    dpg.add_text(last_modified_date)
 
                 else:
                     # It's a folder
