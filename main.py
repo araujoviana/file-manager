@@ -91,7 +91,17 @@ def display_working_dir_files(directory, contents):
                         callback=file_clicked,
                         user_data=item,
                     )
-                    dpg.add_text(os.path.getsize(item_path))
+
+                    # Calculate item size with correct measure
+                    item_size = os.path.getsize(item_path)
+                    if item_size >= 1048576:  # 1 MB
+                        display_item_size = f"{item_size / 1048576:.2f} MB"
+                    elif item_size >= 1024:  # 1 KB
+                        display_item_size = f"{item_size / 1024:.2f} KB"
+                    else:
+                        display_item_size = f"{item_size} B"
+
+                    dpg.add_text(display_item_size)
                 else:
                     # It's a folder
                     dpg.add_button(
