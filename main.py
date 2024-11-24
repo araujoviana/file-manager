@@ -59,6 +59,8 @@ def back_button_clicked(sender, app_data, user_data):
 
 
 # Display functions
+
+
 def display_working_dir_files(directory, contents):
     """Update interface to show working directory's files in a grid."""
     for button in dpg.get_item_children("FileWindow")[1]:
@@ -89,7 +91,7 @@ def display_working_dir_files(directory, contents):
                 else:
                     # It's a folder
                     dpg.add_button(label=item, callback=folder_clicked, user_data=item)
-                    dpg.add_text("N/A")
+                    dpg.add_text(get_folder_size(item_path))
 
 
 def add_basic_fields():
@@ -120,6 +122,24 @@ def add_basic_fields():
     )
 
     dpg.add_separator(parent="FileWindow")
+
+
+# Helper functions
+
+
+def get_folder_size(path):
+    """Get folder's total content size recursively."""
+    total_size = 0
+    try:
+        for item in os.listdir(path):
+            item_path = os.path.join(path, item)
+            if os.path.isfile(item_path):
+                total_size += os.path.getsize(item_path)
+            elif os.path.isdir(item_path):
+                total_size += get_folder_size(item_path)
+    except PermissionError:
+        return total_size
+    return total_size
 
 
 # Main Window
