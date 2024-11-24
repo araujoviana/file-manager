@@ -64,7 +64,8 @@ def back_button_clicked(sender, app_data, user_data):
 
 
 def display_working_dir_files(directory, contents):
-    """Update interface to show working directory's files in a grid."""
+    """Update interface to show working directory's files in a table."""
+    # Clean previous items
     for button in dpg.get_item_children("FileWindow")[1]:
         dpg.delete_item(button)
 
@@ -109,9 +110,12 @@ def display_working_dir_files(directory, contents):
 
                     dpg.add_text(display_item_size)
 
+                    # Guess file's mimetype, not sure if it works on windows
                     file_type, _ = mimetypes.guess_type(item_path)
+
                     dpg.add_text(file_type if file_type is not None else "Unknown")
 
+                    # Gets last modified date, excluding milliseconds
                     mod_time = os.path.getmtime(item_path)
                     last_modified_date = datetime.datetime.fromtimestamp(
                         mod_time
@@ -126,6 +130,9 @@ def display_working_dir_files(directory, contents):
                         callback=folder_clicked,
                         user_data=item,
                     )
+
+
+# Helper functions
 
 
 def add_basic_fields():
@@ -156,9 +163,6 @@ def add_basic_fields():
     )
 
     dpg.add_separator(parent="FileWindow")
-
-
-# Helper functions
 
 
 # Main Window
