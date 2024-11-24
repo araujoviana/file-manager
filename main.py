@@ -73,19 +73,23 @@ def display_working_dir_files(directory, contents):
         borders_innerH=True,
         borders_outerH=True,
     ):
-        # Add a column for file/folder names
+        # Column for file/folder names
         dpg.add_table_column(label="Name")
+        # Column for file size
+        dpg.add_table_column(label="Size")
 
         for item in contents:
             item_path = os.path.join(directory, item)
 
             with dpg.table_row():
-                if os.path.isdir(item_path):
-                    # It's a folder
-                    dpg.add_button(label=item, callback=folder_clicked, user_data=item)
-                else:
+                if os.path.isfile(item_path):
                     # It's a file
                     dpg.add_button(label=item, callback=file_clicked, user_data=item)
+                    dpg.add_text(os.path.getsize(item_path))
+                else:
+                    # It's a folder
+                    dpg.add_button(label=item, callback=folder_clicked, user_data=item)
+                    dpg.add_text("N/A")
 
 
 def add_basic_fields():
