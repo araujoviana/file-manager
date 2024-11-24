@@ -4,12 +4,14 @@ import os
 
 home_dir = os.path.expanduser("~")
 contents = os.listdir(home_dir)
+current_dir = home_dir
 
 # Navigation functions
 
 
 # TODO Open files, this only navigates through folders
 def file_clicked(sender, app_data, user_data):
+    global current_dir
     parent_id = dpg.get_item_parent(sender)
 
     # Log
@@ -22,8 +24,10 @@ def file_clicked(sender, app_data, user_data):
         home_dir,
         user_data,
     )
+    new_dir = os.path.join(current_dir, user_data)
     contents = os.listdir(new_dir)
     print(new_dir)
+    current_dir = new_dir
     display_working_dir_files(new_dir, contents)
 
 
