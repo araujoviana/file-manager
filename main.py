@@ -85,10 +85,18 @@ def display_working_dir_files(directory, contents):
 def add_basic_fields():
     """Add and display essential UI components."""
     # Back button
-    dpg.add_button(label="<-", callback=back_button_clicked, parent="FileWindow")
+    dpg.add_button(
+        callback=back_button_clicked,
+        parent="FileWindow",
+        arrow=True,
+        direction=dpg.mvDir_Left,
+    )
 
     # Current PATH
-    dpg.add_text(current_dir, parent="FileWindow")
+    dpg.add_text(
+        current_dir,
+        parent="FileWindow",
+    )
 
 
 # Main window
