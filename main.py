@@ -1,9 +1,30 @@
+# REVIEW theres like 5 repeated global current_dir throughout the entire code
+
 import dearpygui.dearpygui as dpg
 import os
+import subprocess
+import platform
 
 home_dir = os.path.expanduser("~")
 contents = os.listdir(home_dir)  # Current directory's files
 current_dir = home_dir  # Always starts in home directory
+
+# Interaction functions
+
+
+def file_clicked(sender, app_data, user_data):
+    """Open clicked file using appropriate program."""
+    global current_dir
+    file_path = os.path.join(current_dir, user_data)
+
+    # Opens file with system's default
+    if platform.system() == "Windows":
+        os.startfile(file_path)
+    elif platform.system() == "Darwin":  # macOS
+        subprocess.call(("open", file_path))
+    else:  # Linux
+        subprocess.call(("xdg-open", file_path))
+
 
 # Navigation functions
 
@@ -47,10 +68,18 @@ def display_working_dir_files(directory, contents):
 
     add_basic_fields()
 
-    for file in contents:
-        dpg.add_button(
-            label=file, callback=folder_clicked, user_data=file, parent="FileWindow"
-        )
+    for item in contents:
+        item_path = os.path.join(directory, item)
+        if os.path.isdir(item_path):
+            # It's a folder
+            dpg.add_button(
+                label=item, callback=folder_clicked, user_data=item, parent="FileWindow"
+            )
+        else:
+            # It's a file
+            dpg.add_button(
+                label=item, callback=file_clicked, user_data=item, parent="FileWindow"
+            )
 
 
 def add_basic_fields():
