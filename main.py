@@ -59,27 +59,33 @@ def back_button_clicked(sender, app_data, user_data):
 
 
 # Display functions
-
-
 def display_working_dir_files(directory, contents):
-    """Update interface to show working directory's files."""
+    """Update interface to show working directory's files in a grid."""
     for button in dpg.get_item_children("FileWindow")[1]:
         dpg.delete_item(button)
 
     add_basic_fields()
 
-    for item in contents:
-        item_path = os.path.join(directory, item)
-        if os.path.isdir(item_path):
-            # It's a folder
-            dpg.add_button(
-                label=item, callback=folder_clicked, user_data=item, parent="FileWindow"
-            )
-        else:
-            # It's a file
-            dpg.add_button(
-                label=item, callback=file_clicked, user_data=item, parent="FileWindow"
-            )
+    with dpg.table(
+        parent="FileWindow",
+        header_row=True,
+        resizable=True,
+        borders_innerH=True,
+        borders_outerH=True,
+    ):
+        # Add a column for file/folder names
+        dpg.add_table_column(label="Name")
+
+        for item in contents:
+            item_path = os.path.join(directory, item)
+
+            with dpg.table_row():
+                if os.path.isdir(item_path):
+                    # It's a folder
+                    dpg.add_button(label=item, callback=folder_clicked, user_data=item)
+                else:
+                    # It's a file
+                    dpg.add_button(label=item, callback=file_clicked, user_data=item)
 
 
 def add_basic_fields():
@@ -135,7 +141,8 @@ with dpg.window(
     display_working_dir_files(home_dir, contents)
 
 # General configs
-dpg.set_global_font_scale(1.25)
+# REVIEW Font looks ugly
+# dpg.set_global_font_scale(1.25)
 
 dpg.show_viewport()
 dpg.start_dearpygui()
