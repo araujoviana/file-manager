@@ -86,12 +86,19 @@ def display_working_dir_files(directory, contents):
             with dpg.table_row():
                 if os.path.isfile(item_path):
                     # It's a file
-                    dpg.add_button(label=item, callback=file_clicked, user_data=item)
+                    dpg.add_button(
+                        label=item,
+                        callback=file_clicked,
+                        user_data=item,
+                    )
                     dpg.add_text(os.path.getsize(item_path))
                 else:
                     # It's a folder
-                    dpg.add_button(label=item, callback=folder_clicked, user_data=item)
-                    dpg.add_text(get_folder_size(item_path))
+                    dpg.add_button(
+                        label=item,
+                        callback=folder_clicked,
+                        user_data=item,
+                    )
 
 
 def add_basic_fields():
@@ -127,25 +134,15 @@ def add_basic_fields():
 # Helper functions
 
 
-def get_folder_size(path):
-    """Get folder's total content size recursively."""
-    total_size = 0
-    try:
-        for item in os.listdir(path):
-            item_path = os.path.join(path, item)
-            if os.path.isfile(item_path):
-                total_size += os.path.getsize(item_path)
-            elif os.path.isdir(item_path):
-                total_size += get_folder_size(item_path)
-    except PermissionError:
-        return total_size
-    return total_size
-
-
 # Main Window
 
 dpg.create_context()
-dpg.create_viewport(title="File Manager", decorated=True, width=800, height=600)
+dpg.create_viewport(
+    title="File Manager",
+    decorated=True,
+    width=800,
+    height=600,
+)
 dpg.setup_dearpygui()
 
 with dpg.window(
