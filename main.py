@@ -1,17 +1,12 @@
 import dearpygui.dearpygui as dpg
+
 import os
 
-# os code
 home_dir = os.path.expanduser("~")
 contents = os.listdir(home_dir)
 
-
-def save_callback():
-    print("Save clicked")
-
-
 dpg.create_context()
-dpg.create_viewport(title="App", decorated=True, width=800, height=600)
+dpg.create_viewport(title="File Manager", decorated=True, width=800, height=600)
 dpg.setup_dearpygui()
 
 with dpg.window(
@@ -25,7 +20,7 @@ with dpg.window(
     no_collapse=True,
 ):
     for file in contents:
-        dpg.add_text(file)
+        dpg.add_button(label=file)
 
 
 dpg.show_viewport()
