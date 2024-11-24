@@ -8,8 +8,25 @@ contents = os.listdir(home_dir)
 # Navigation functions
 
 
-def button_callback(sender, app_data, user_data):
-    print(f"The message is {user_data}")
+# TODO Open files, this only navigates through folders
+def file_clicked(sender, app_data, user_data):
+    parent_id = dpg.get_item_parent(sender)
+
+    working_directory_files = dpg.get_item_children(parent_id)[1]
+
+    # Log
+    print(f"File clicked:{user_data}")
+    print(f"Parent ID: {parent_id}")
+    print(f"Children: {working_directory_files}")
+
+    for file in working_directory_files:
+
+        if dpg.get_item_type(file) == "mvAppItemType::mvButton":
+            dpg.delete_item(file)
+            print(f"Hiding {file}")
+
+    # HACK doesn't work on windows, unless you add a ternary checking for os(?)
+    contents = os.listdir(home_dir + "/" + user_data)
 
 
 # Main window
@@ -28,7 +45,7 @@ with dpg.window(
     no_collapse=True,
 ):
     for file in contents:
-        dpg.add_button(label=file, callback=button_callback, user_data=file)
+        dpg.add_button(label=file, callback=file_clicked, user_data=file)
 
 
 dpg.show_viewport()
