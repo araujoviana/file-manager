@@ -4,6 +4,7 @@ import dearpygui.dearpygui as dpg
 import os
 import subprocess
 import platform
+import mimetypes
 
 home_dir = os.path.expanduser("~")
 contents = os.listdir(home_dir)  # Current directory's files
@@ -79,6 +80,8 @@ def display_working_dir_files(directory, contents):
         dpg.add_table_column(label="Name")
         # Column for file size
         dpg.add_table_column(label="Size")
+        # Column for file type
+        dpg.add_table_column(label="Type")
 
         for item in contents:
             item_path = os.path.join(directory, item)
@@ -102,6 +105,10 @@ def display_working_dir_files(directory, contents):
                         display_item_size = f"{item_size} B"
 
                     dpg.add_text(display_item_size)
+
+                    file_type, _ = mimetypes.guess_type(item_path)
+                    dpg.add_text(file_type if file_type is not None else "Unknown")
+
                 else:
                     # It's a folder
                     dpg.add_button(
