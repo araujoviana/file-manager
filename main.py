@@ -12,24 +12,29 @@ contents = os.listdir(home_dir)
 def file_clicked(sender, app_data, user_data):
     parent_id = dpg.get_item_parent(sender)
 
-    working_directory_files = dpg.get_item_children(parent_id)[1]
-
     # Log
+    working_directory_files = dpg.get_item_children(parent_id)[1]
     print(f"File clicked:{user_data}")
     print(f"Parent ID: {parent_id}")
     print(f"Children: {working_directory_files}")
 
-    new_dir = os.path.join(home_dir, user_data)
+    new_dir = os.path.join(
+        home_dir,
+        user_data,
+    )
     contents = os.listdir(new_dir)
-    display_working_dir_files(new_dir)
+    print(new_dir)
+    display_working_dir_files(new_dir, contents)
 
 
-def display_working_dir_files(directory):
+def display_working_dir_files(directory, contents):
     for button in dpg.get_item_children("FileWindow")[1]:
         dpg.delete_item(button)
 
     for file in contents:
-        dpg.add_button(label=file, callback=file_clicked, user_data=file)
+        dpg.add_button(
+            label=file, callback=file_clicked, user_data=file, parent="FileWindow"
+        )
 
 
 # Main window
@@ -49,7 +54,7 @@ with dpg.window(
     tag="FileWindow",
 ):
 
-    display_working_dir_files(home_dir)
+    display_working_dir_files(home_dir, contents)
 
 dpg.show_viewport()
 dpg.start_dearpygui()
