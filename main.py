@@ -84,13 +84,24 @@ def display_working_dir_files(directory, contents):
 
 def add_basic_fields():
     """Add and display essential UI components."""
+    # Create a theme for the button
+    with dpg.theme() as ui_theme:
+        with dpg.theme_component(dpg.mvButton):
+            dpg.add_theme_style(
+                dpg.mvStyleVar_FrameRounding, 5, category=dpg.mvThemeCat_Core
+            )  # Optional, rounded corners
+
     # Back button
-    dpg.add_button(
+    back_button = dpg.add_button(
+        label="Back",
         callback=back_button_clicked,
         parent="FileWindow",
         arrow=True,
         direction=dpg.mvDir_Left,
     )
+
+    # Apply the theme to the back button
+    dpg.bind_item_theme(back_button, ui_theme)
 
     # Current PATH
     dpg.add_text(
@@ -98,8 +109,11 @@ def add_basic_fields():
         parent="FileWindow",
     )
 
+    dpg.add_separator(parent="FileWindow")
 
-# Main window
+
+# Main Window
+
 dpg.create_context()
 dpg.create_viewport(title="File Manager", decorated=True, width=800, height=600)
 dpg.setup_dearpygui()
@@ -119,6 +133,9 @@ with dpg.window(
     add_basic_fields()
 
     display_working_dir_files(home_dir, contents)
+
+# General configs
+dpg.set_global_font_scale(1.25)
 
 dpg.show_viewport()
 dpg.start_dearpygui()
