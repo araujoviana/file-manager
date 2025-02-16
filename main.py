@@ -1,11 +1,10 @@
-# REVIEW theres like 5 repeated global current_dir throughout the entire code
-
 import dearpygui.dearpygui as dpg
 import os
 import subprocess
 import platform
 import mimetypes
 import datetime
+
 
 home_dir = os.path.expanduser("~")
 contents = os.listdir(home_dir)  # Current directory's files
