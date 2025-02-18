@@ -5,8 +5,6 @@ A very simple file manager written in Python
 
 A simple Python file manager made in Dear PyGui, should work in all operating systems but I haven't tested it on a non-linux machine.
 
-Despite its name, the file manager can't do much beyond opening files *(for now)*.
-
 ## Features
 
 1. Lists files and directories
@@ -15,7 +13,7 @@ Despite its name, the file manager can't do much beyond opening files *(for now)
 4. Opens files with default system programs
 5. Other things I might add in the future
 
-## Instalation
+## Installation
 
 1. Clone the repository:
 
