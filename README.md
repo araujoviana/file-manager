@@ -1,3 +1,5 @@
+> 📦 **Archived (November 2026).** A simple Python file manager built with Dear PyGui (February 2025). Kept as a read-only record of what I was working on at the time; it is no longer maintained.
+
 # File Manager
 A very simple file manager written in Python
 
